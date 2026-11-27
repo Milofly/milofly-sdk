@@ -1,6 +1,6 @@
 {
   "name": "@milofly/app-server",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "description": "Milofly app server helpers: webhook and session token verification, OAuth install, API client.",
   "type": "module",

@@ -1,6 +1,6 @@
 {
   "name": "@milofly/theme-sdk",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "description": "Milofly theme package SDK: manifest types, project layout (read/write), shape check and component schema contract helpers.",
   "type": "module",

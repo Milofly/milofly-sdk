@@ -1,6 +1,6 @@
 {
   "name": "@milofly/cli",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "description": "Milofly CLI: sign in with your browser, develop composition themes against your development store, scaffold apps.",
   "type": "module",
@@ -14,7 +14,7 @@
     ".": "./src/milofly.mjs"
   },
   "dependencies": {
-    "@milofly/theme-sdk": "0.1.0"
+    "@milofly/theme-sdk": "0.1.1"
   },
   "scripts": {
     "pack:dist": "node ../../scripts/paketle.mjs cli"

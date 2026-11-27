@@ -12,8 +12,8 @@
     "start": "node dist/server.js"
   },
   "dependencies": {
-    "@milofly/app-bridge": "0.1.0",
-    "@milofly/app-server": "0.1.0"
+    "@milofly/app-bridge": "0.1.1",
+    "@milofly/app-server": "0.1.1"
   },
   "devDependencies": {
     "@types/node": "^20",

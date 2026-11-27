@@ -10,7 +10,7 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 
     <PackageId>Milofly.Apps</PackageId>
-    <Version>0.1.0</Version>
+    <Version>0.1.1</Version>
     <Authors>Milofly</Authors>
     <Description>Milofly app server helpers for .NET: webhook and session token verification, OAuth install, API client.</Description>
     <PackageReadmeFile>README.md</PackageReadmeFile>

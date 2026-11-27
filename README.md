@@ -90,7 +90,7 @@ Releases run from GitHub Actions ([`.github/workflows/sdk-yayin.yml`](.github/wo
   by npm). Each npm package names `Milofly/milofly-sdk` and the workflow file `sdk-yayin.yml` as its trusted publisher.
 - **NuGet** uses [trusted publishing](https://learn.microsoft.com/nuget/nuget-org/trusted-publishing) through
   `NuGet/login`: a nuget.org trusted publishing policy for `Milofly/milofly-sdk` and `sdk-yayin.yml`, and the repository
-  secret `NUGET_USER` (the nuget.org profile name). No NuGet API key is stored.
+  variable `NUGET_USER` (the nuget.org profile name; until it is set the NuGet job is skipped). No NuGet API key is stored.
 - Before any upload the workflow checks that the root and package `CHANGELOG.md` files have a dated `## <version>`
   heading (`node scripts/surum-notu.mjs <version>`). A version that is already published is skipped, never overwritten,
   so re-running the workflow finishes a release that stopped half-way.
@@ -107,7 +107,7 @@ steps 1–2 and then, in this order:
 1. A maintainer publishes the four npm packages once from their machine: `npm login` (2FA), then
    `node scripts/yayin.mjs --yayimla`.
 2. On npmjs.com, set `Milofly/milofly-sdk` + `sdk-yayin.yml` as the trusted publisher of each of the four packages.
-   On nuget.org, create the trusted publishing policy, and add the repository secret `NUGET_USER`.
+   On nuget.org, create the trusted publishing policy, and add the repository variable `NUGET_USER`.
 3. Push the tag `v0.1.0`. The npm job finds the four packages already published and skips them; the NuGet job publishes
    `Milofly.Apps` 0.1.0.
 

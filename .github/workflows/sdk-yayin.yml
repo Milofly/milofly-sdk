@@ -9,7 +9,7 @@
 #        The very first version of a package is published by a maintainer with `node scripts/yayin.mjs --yayimla` (2FA), because
 #        npm shows the trusted publisher settings only for a package that exists.
 # NuGet: trusted publishing (OIDC) through NuGet/login. A trusted publishing policy for this repository and this workflow file
-#        must exist on nuget.org, and the repository secret NUGET_USER holds the nuget.org profile name (not an e-mail address).
+#        must exist on nuget.org, and the repository variable NUGET_USER holds the nuget.org profile name (not an e-mail address).
 # Published versions cannot be changed or deleted; bump the version for every release.
 name: sdk-yayin
 
@@ -77,6 +77,9 @@ jobs:
 
   nuget:
     needs: surum
+    # nuget.org'da yayın politikası tanımlanıp depo değişkeni NUGET_USER (nuget.org profil adı) eklenene kadar NuGet işi atlanır;
+    # npm yayını bundan etkilenmez.
+    if: ${{ vars.NUGET_USER != '' }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -91,6 +94,6 @@ jobs:
         id: login
         uses: NuGet/login@v1
         with:
-          user: ${{ secrets.NUGET_USER }}
+          user: ${{ vars.NUGET_USER }}
       - name: Push Milofly.Apps
         run: dotnet nuget push "$RUNNER_TEMP/nupkg/Milofly.Apps.${{ needs.surum.outputs.version }}.nupkg" --api-key "${{ steps.login.outputs.NUGET_API_KEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
