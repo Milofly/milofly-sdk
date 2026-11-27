@@ -1,0 +1,25 @@
+{
+  "name": "@milofly/theme-sdk",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Milofly theme package SDK: manifest types, project layout (read/write), shape check and component schema contract helpers.",
+  "type": "module",
+  "sideEffects": false,
+  "engines": {
+    "node": ">=20"
+  },
+  "exports": {
+    ".": {
+      "types": "./src/index.d.ts",
+      "default": "./src/index.js"
+    },
+    "./component-schema": {
+      "types": "./src/component-schema.d.ts",
+      "default": "./src/component-schema.js"
+    }
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "pack:dist": "node ../../scripts/paketle.mjs theme-sdk"
+  }
+}

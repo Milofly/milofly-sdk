@@ -1,0 +1,22 @@
+{
+  "name": "milofly-ilk-uygulama",
+  "version": "0.1.0",
+  "private": true,
+  "description": "First Milofly app: install, webhooks, embedded page (App Bridge), API call.",
+  "type": "module",
+  "engines": {
+    "node": ">=20.6"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/server.js"
+  },
+  "dependencies": {
+    "@milofly/app-bridge": "0.1.0",
+    "@milofly/app-server": "0.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "typescript": "^5"
+  }
+}

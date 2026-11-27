@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>First Milofly app</title>
+    <!-- App Bridge is served from the installed package; no bundler needed. -->
+    <script type="importmap">
+      {
+        "imports": {
+          "@milofly/app-bridge": "/vendor/app-bridge/index.js",
+          "@milofly/app-bridge/contract": "/vendor/app-bridge/contract.js"
+        }
+      }
+    </script>
+    <style>
+      body { font: 14px/1.5 system-ui, sans-serif; margin: 0; padding: 16px; color: #1c1a33; }
+      main { max-width: 720px; }
+      .row { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0; }
+      button { height: 36px; padding: 0 14px; border-radius: 10px; border: 1px solid #c9c4e8; background: #fff; font: inherit; cursor: pointer; }
+      button.primary { background: #5b3df5; border-color: #5b3df5; color: #fff; }
+      pre { background: #f5f4fb; padding: 12px; border-radius: 10px; overflow: auto; font-size: 12px; }
+      [data-state="error"] { color: #b42318; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>First Milofly app</h1>
+      <p id="status" data-state="loading">Connecting to the Milofly panel…</p>
+      <div class="row">
+        <button class="primary" id="load">Load store context</button>
+        <button id="toast">Show a toast</button>
+        <button id="confirm">Ask for confirmation</button>
+        <button id="order">Open order #1</button>
+        <button id="page">Go to /settings</button>
+      </div>
+      <pre id="out"></pre>
+    </main>
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>

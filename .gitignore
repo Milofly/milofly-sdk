@@ -1,0 +1,10 @@
+node_modules/
+# scripts/paketle.mjs output (the publish folder of each package)
+js/*/dist/
+ornekler/*/dist/
+ornekler/*/.env
+dotnet/**/bin/
+dotnet/**/obj/
+*.tgz
+*.nupkg
+.vs/

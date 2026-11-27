@@ -1,0 +1,52 @@
+{
+  "surum": 1,
+  "kod": "[a-z][a-z0-9_]*(?:\\.[a-z][a-z0-9_]*)*",
+  "jeton": "\\{\\{[ \\t]*([a-z][a-z0-9_]*(?:\\.[a-z][a-z0-9_]*)*)(?::([a-z0-9_]+))?[ \\t]*\\}\\}",
+  "hamJeton": "\\{\\{[^{}]*\\}\\}",
+  "yerelAdAlani": "bu",
+  "zenginMetinOzniteligi": "data-alan",
+  "canliOzniteligi": "data-alan-canli",
+  "degerTipleri": {
+    "text":         { "bicimler": ["duz"] },
+    "number":       { "bicimler": ["sayi"] },
+    "number_range": { "bicimler": ["birimli", "aralik", "en_fazla"] },
+    "money":        { "bicimler": ["tam", "kusuratsiz"] },
+    "percent":      { "bicimler": ["tam"] },
+    "date":         { "bicimler": ["gun_ay", "gun_ay_yil"] },
+    "date_range":   { "bicimler": ["gun_ay", "haftanin_gunu"] },
+    "time":         { "bicimler": ["saat"] },
+    "state":        { "bicimler": [] },
+    "rich_text":    { "bicimler": ["duz"], "yalnizZenginMetinAlani": true },
+    "table":        { "bicimler": ["duz"], "yalnizZenginMetinAlani": true, "blok": true }
+  },
+  "baglamlar": ["product", "category", "cart", "customer", "return"],
+  "yuzeyler": ["storefront", "mail", "document", "message"],
+  "cozumAnlari": ["static", "visit"],
+  "metinAlanTurleri": ["text", "textarea", "rich_text", "string_list", "qa_pairs", "card_rows"],
+  "htmlBeyaniTurleri": ["text", "textarea"],
+  "zenginMetinAlanTurleri": ["rich_text"],
+  "gizlemeBloklari": ["p", "li", "h1", "h2", "h3", "h4", "h5", "h6", "tr", "div"],
+  "zenginMetinEtiketleri": { "satirIci": "span", "blok": "div" },
+  "zenginMetinEnCokOge": 40,
+  "tablo": { "hucreTipleri": ["money", "number", "percent", "text"], "enCokSatir": 36, "enCokSutun": 16 },
+  "zenginMetinYuzeyleri": {
+    "product.description": { "baglamlar": ["product"], "kaynaklar": ["sunucu"] },
+    "product.custom_tabs": { "baglamlar": ["product"], "kaynaklar": ["sunucu"] },
+    "component.product": { "baglamlar": ["product"], "kaynaklar": ["sunucu"] }
+  },
+  "bilesenBaglamYuzeyleri": { "product": "component.product" },
+  "bilesenMetniYuzeyi": { "alanTurleri": ["text", "textarea"], "baglamlar": [], "kaynaklar": ["sunucu"], "tipler": ["text"] },
+  "alanListesiTuru": "dynamic_field_list",
+  "alanListesiEnFazla": 12,
+  "alanListesiNotu": { "anahtar": "not", "enCokKarakter": 300 },
+  "kosulCumlesiOneki": "storefront.dynamic_field.condition",
+  "adetSeciciTeklifi": { "kind": "cart", "code": "quantity" },
+  "teslimGunCumleleri": {
+    "business_days": "storefront.product.delivery_days",
+    "calendar_days": "storefront.product.delivery_days_calendar"
+  },
+  "teslimGunBirimleri": {
+    "business_days": "storefront.dynamic_field.delivery_days_unit",
+    "calendar_days": "storefront.dynamic_field.delivery_days_unit_calendar"
+  }
+}

@@ -1,0 +1,66 @@
+# Build, type check and dry-run release on every push and pull request. Nothing is published here.
+name: sdk-denetim
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  js:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - name: Type check
+        run: npm run typecheck
+      - name: Dry-run release (build the four packages + npm publish --dry-run)
+        run: node scripts/yayin.mjs
+      - name: CLI starts
+        run: node js/cli/src/milofly.mjs --help
+      - name: "app init template installs and builds from the packed packages"
+        run: |
+          set -euo pipefail
+          pack_dir="$RUNNER_TEMP/packs"
+          mkdir -p "$pack_dir"
+          for p in theme-sdk app-bridge app-server cli; do
+            npm pack "js/$p/dist" --pack-destination "$pack_dir" --silent
+          done
+          work="$RUNNER_TEMP/app-init"
+          mkdir -p "$work" && cd "$work"
+          npm init -y >/dev/null
+          npm install "$pack_dir"/milofly-theme-sdk-*.tgz "$pack_dir"/milofly-cli-*.tgz
+          npx milofly app init demo
+          cd demo
+          node -e '
+            const fs = require("fs");
+            const dir = process.argv[1];
+            const pkg = JSON.parse(fs.readFileSync("package.json", "utf8"));
+            for (const name of ["app-bridge", "app-server"]) {
+              const file = fs.readdirSync(dir).find((f) => f.startsWith(`milofly-${name}-`));
+              if (!file) throw new Error(`tarball for @milofly/${name} not found`);
+              pkg.dependencies[`@milofly/${name}`] = `file:${dir}/${file}`;
+            }
+            fs.writeFileSync("package.json", JSON.stringify(pkg, null, 2) + "\n");
+          ' "$pack_dir"
+          npm install
+          npm run build
+
+  dotnet:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: "8.0.x"
+      - run: dotnet build dotnet/Milofly.Apps.sln -c Release
+      - name: Pack (not pushed)
+        run: dotnet pack dotnet/Milofly.Apps/Milofly.Apps.csproj -c Release -o "$RUNNER_TEMP/nupkg"

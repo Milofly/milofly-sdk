@@ -1,0 +1,43 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+    <RootNamespace>Milofly.Apps</RootNamespace>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+
+    <PackageId>Milofly.Apps</PackageId>
+    <Version>0.1.0</Version>
+    <Authors>Milofly</Authors>
+    <Description>Milofly app server helpers for .NET: webhook and session token verification, OAuth install, API client.</Description>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <IsPackable>true</IsPackable>
+  </PropertyGroup>
+
+  <!--
+    Lisans ve adresler sahibin kararıdır ve TEK yerde durur: ../../scripts/yayin-ayari.json (JS paketleri de aynı dosyayı okur).
+    Değer uydurulmaz: boş alan varken `dotnet build` çalışır, `dotnet pack` MiloflyYayinKapisi ile durur.
+  -->
+  <PropertyGroup>
+    <MiloflyYayinAyariYolu>$(MSBuildThisFileDirectory)..\..\scripts\yayin-ayari.json</MiloflyYayinAyariYolu>
+    <MiloflyYayinAyari>$([System.IO.File]::ReadAllText($(MiloflyYayinAyariYolu)))</MiloflyYayinAyari>
+    <PackageLicenseExpression>$([System.Text.RegularExpressions.Regex]::Match($(MiloflyYayinAyari), `"license"\s*:\s*"([^"]*)"`).Groups[1].Value.Trim())</PackageLicenseExpression>
+    <RepositoryUrl>$([System.Text.RegularExpressions.Regex]::Match($(MiloflyYayinAyari), `"repository"\s*:\s*"([^"]*)"`).Groups[1].Value.Trim())</RepositoryUrl>
+    <RepositoryType Condition="'$(RepositoryUrl)' != ''">git</RepositoryType>
+    <PackageProjectUrl>$([System.Text.RegularExpressions.Regex]::Match($(MiloflyYayinAyari), `"homepage"\s*:\s*"([^"]*)"`).Groups[1].Value.Trim())</PackageProjectUrl>
+  </PropertyGroup>
+
+  <Target Name="MiloflyYayinKapisi" BeforeTargets="GenerateNuspec">
+    <Error Condition="'$(PackageLicenseExpression)' == ''" Text="Milofly.Apps: yayin-ayari.json içinde license boş; lisans sahip kararı yazılmadan paket üretilmez." />
+    <Error Condition="'$(RepositoryUrl)' == ''" Text="Milofly.Apps: yayin-ayari.json içinde repository boş; adres sahip kararı yazılmadan paket üretilmez." />
+    <Error Condition="'$(PackageProjectUrl)' == ''" Text="Milofly.Apps: yayin-ayari.json içinde homepage boş; adres sahip kararı yazılmadan paket üretilmez." />
+  </Target>
+
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,17 @@
+{
+  "name": "@milofly/app-bridge",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Milofly App Bridge: embed an app in the Milofly store panel (client and host).",
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./src/index.ts",
+    "./host": "./src/host.ts",
+    "./contract": "./src/contract.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "pack:dist": "node ../../scripts/paketle.mjs app-bridge"
+  }
+}

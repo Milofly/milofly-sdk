@@ -1,0 +1,96 @@
+# Publishes the npm packages (@milofly/theme-sdk, app-bridge, app-server, cli) and the NuGet package (Milofly.Apps).
+#
+# Trigger: a version tag (v0.1.0) or a manual run. The tag must equal the version of every package, and the root and package
+# CHANGELOG.md files must have a dated "## <version>" heading, not "(unreleased)" (both checked below, before any upload).
+# Re-running is safe: a version that already exists on npm or nuget.org is skipped, never overwritten. A release that stopped
+# half-way is finished by running the workflow again, and the first release (npm published by hand, see below) is tagged as usual.
+# npm:   trusted publishing (OIDC). Each npm package must name this repository and this workflow file (sdk-yayin.yml) as its
+#        trusted publisher in the package settings on npmjs.com. No npm token is stored. Provenance is added by npm automatically.
+#        The very first version of a package is published by a maintainer with `node scripts/yayin.mjs --yayimla` (2FA), because
+#        npm shows the trusted publisher settings only for a package that exists.
+# NuGet: trusted publishing (OIDC) through NuGet/login. A trusted publishing policy for this repository and this workflow file
+#        must exist on nuget.org, and the repository secret NUGET_USER holds the nuget.org profile name (not an e-mail address).
+# Published versions cannot be changed or deleted; bump the version for every release.
+name: sdk-yayin
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sdk-yayin
+  cancel-in-progress: false
+
+jobs:
+  surum:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.check.outputs.version }}
+    steps:
+      - uses: actions/checkout@v6
+      - id: check
+        name: Tag and package versions agree
+        run: |
+          node -e '
+            const fs = require("fs");
+            const versions = new Map();
+            for (const p of ["theme-sdk", "app-bridge", "app-server", "cli"]) {
+              versions.set(`@milofly/${p}`, JSON.parse(fs.readFileSync(`js/${p}/package.json`, "utf8")).version);
+            }
+            const csproj = fs.readFileSync("dotnet/Milofly.Apps/Milofly.Apps.csproj", "utf8");
+            const m = csproj.match(/<Version>([^<]+)<\/Version>/);
+            if (!m) throw new Error("Milofly.Apps.csproj has no <Version>");
+            versions.set("Milofly.Apps", m[1]);
+            const unique = [...new Set(versions.values())];
+            if (unique.length !== 1) throw new Error("Package versions differ: " + JSON.stringify(Object.fromEntries(versions)));
+            const ref = process.env.GITHUB_REF;
+            if (ref.startsWith("refs/tags/") && ref !== `refs/tags/v${unique[0]}`) {
+              throw new Error(`Tag ${ref} does not match package version ${unique[0]}`);
+            }
+            fs.appendFileSync(process.env.GITHUB_OUTPUT, `version=${unique[0]}\n`);
+          '
+      - name: Release notes are dated
+        run: node scripts/surum-notu.mjs "${{ steps.check.outputs.version }}"
+
+  npm:
+    needs: surum
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+          registry-url: "https://registry.npmjs.org"
+      - name: npm with trusted publishing support (11.5.1 or newer)
+        run: npm install -g npm@11.21.3
+      - run: npm ci
+      - run: npm run typecheck
+      - name: Publish (theme-sdk, app-bridge, app-server, cli)
+        run: node scripts/yayin.mjs --yayimla --guvenilir
+
+  nuget:
+    needs: surum
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: "8.0.x"
+      - run: dotnet pack dotnet/Milofly.Apps/Milofly.Apps.csproj -c Release -o "$RUNNER_TEMP/nupkg"
+      - name: NuGet login (OIDC to a short-lived API key)
+        id: login
+        uses: NuGet/login@v1
+        with:
+          user: ${{ secrets.NUGET_USER }}
+      - name: Push Milofly.Apps
+        run: dotnet nuget push "$RUNNER_TEMP/nupkg/Milofly.Apps.${{ needs.surum.outputs.version }}.nupkg" --api-key "${{ steps.login.outputs.NUGET_API_KEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate

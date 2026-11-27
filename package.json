@@ -1,0 +1,21 @@
+{
+  "name": "milofly-sdk",
+  "private": true,
+  "description": "Milofly SDKs and CLI (npm workspace root; the published packages are in js/*).",
+  "license": "MIT",
+  "type": "module",
+  "workspaces": [
+    "js/*"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "release:dry-run": "node scripts/yayin.mjs"
+  },
+  "devDependencies": {
+    "@types/node": "20.19.33",
+    "typescript": "5.9.3"
+  }
+}

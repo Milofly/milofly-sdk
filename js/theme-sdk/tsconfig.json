@@ -1,0 +1,14 @@
+{
+  "//": "Yalnız elle yazılan tip bildirimlerini (src/*.d.ts) denetler; paket JavaScript'tir ve derlenmez (scripts/paketle.mjs).",
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "lib": ["ES2022"],
+    "types": ["node"],
+    "strict": true,
+    "noEmit": true,
+    "skipLibCheck": false
+  },
+  "files": ["src/index.d.ts", "src/component-schema.d.ts"]
+}

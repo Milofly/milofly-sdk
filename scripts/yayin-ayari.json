@@ -1,0 +1,7 @@
+{
+  "_not": "SDK yayın ayarının TEK kaynağı; değerler Milofly yönetiminin kararıdır (npm @milofly, NuGet Milofly, lisans MIT, herkese açık SDK deposu). Boş alan varken paketle.mjs ve yayin.mjs gerçek yayın paketi üretmez, disa-aktar.mjs dışa aktarmaz, Milofly.Apps.csproj dotnet pack komutunu durdurur. license: SPDX ifadesi (ör. MIT). repository: herkese açık SDK deposunun git adresi; paket klasörü depoda js/<paket> kabul edilir. homepage: geliştirici belgesinin adresi. bugs: hata bildirme adresi. Bu dosyada kesme işareti kullanılmaz (csproj metni okur).",
+  "license": "MIT",
+  "repository": "https://github.com/Milofly/milofly-sdk",
+  "homepage": "https://developer.milofly.com",
+  "bugs": "https://github.com/Milofly/milofly-sdk/issues"
+}
