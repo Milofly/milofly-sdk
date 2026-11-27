@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.1.0 (unreleased)
+## 0.1.0 (2026-11-27)
 
 - First version: `login` (device authorization in the browser), `logout`, `whoami`, `theme init|pull|check|dev|push|pack|submit|list`,
   `app init`.

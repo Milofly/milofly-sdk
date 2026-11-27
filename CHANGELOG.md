@@ -3,7 +3,7 @@
 All packages in this repository are released together with the same version. Details per package are in
 `js/<package>/CHANGELOG.md`.
 
-## 0.1.0 (unreleased)
+## 0.1.0 (2026-11-27)
 
 First public version.
 

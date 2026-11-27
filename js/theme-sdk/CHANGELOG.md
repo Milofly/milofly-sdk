@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.1.0 (unreleased)
+## 0.1.0 (2026-11-27)
 
 - First version: manifest v1 types, `readThemeProject`, `writeThemeProject`, `checkManifestShape`, `canonicalJson`,
   `component-schema` validators (same source as the Milofly platform).
